@@ -37,4 +37,15 @@ $(document).ready(function() {
 
   		$('#price_' + counter).text(price + ".00")
   	});
+
+  	$(document).on('submit', '.loginForm', function(event) {
+  		event.preventDefault()
+  		var formData = $(this).serialize()
+
+  		$.post('/login', formData,
+  		function (data) {
+  			alert(data)
+  		})
+
+  	})
 });

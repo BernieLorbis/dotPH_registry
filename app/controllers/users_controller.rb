@@ -1,13 +1,16 @@
 class UsersController < ApplicationController
-  def login
-  end
 
-  def logout
-  end
+	def login
+		
+	end
 
-  def create
-  end
+	def logout
+	end
 
-  def destroy
-  end
+	def create
+	end
+
+	def destroy
+	end
+
 end
