@@ -66,6 +66,6 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "bootstrap_form", "~> 4.0"
 gem 'epp-client',           github: 'dotph/epp-client'
 gem 'devise'
-gem 'bootstrap', '~> 4.2.1' 
+gem 'bootstrap', '~> 4.3.1' 
 gem 'jquery-rails'
 gem 'paypal-sdk-rest', '~> 1.7.2', github: 'dotph/PayPal-Ruby-SDK'
