@@ -1,0 +1,130 @@
+<div class="container mt-5 p-5 shadow">
+    <!-- Forms -->
+    <div class="col-lg-10 col-sm-8 m-auto">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="text-left h6">First Name</label>
+                            <input type="text" class="form-control" name="firstname">
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="text-left h6">Last Name</label>
+                            <input type="text" class="form-control" name="lastname">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="text-left h6">Organization (Optional)</label>
+                    <input type="text" class="form-control" name="organization">
+                </div>
+                <div class="form-group">
+                    <label class="text-left h6">Contact Number</label>
+                    <input type="number" class="form-control" name="contact_number">
+                </div>
+                <div class="form-group">
+                    <label class="text-left h6">Address</label>
+                    <textarea name="address" class="form-control" rows="5"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="text-left h6">Domain Name</label>
+                    <input type="text" class="form-control" name="domain">
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label class="text-left h6">Period</label>
+                            <select class="form-control" name="period">
+                                <option value="1">1 year</option>
+                                <option value="2">2 years</option>
+                                <option value="5">5 years</option>
+                                <option value="10">10 years</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        <label class="text-left h6">Price</label>
+                        <h5 class="price">$ 35.00</h5>
+                        <input type="hidden" name="price">
+                    </div>
+                </div>
+                <div class="container p-5 text-center bg-info shadow">
+                    <div id="paypal-checkout" class="pt-5"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://www.paypalobjects.com/api/checkout.js"></script>
+<script>
+    paypal.Button.render({
+        env: "sandbox",
+        client: {
+            sandbox: "AW4I8tHeTC_xdRHrcvpgD2RgBHC-QlhnNO3uP_ZyUjpCanJbxbMvM3qI9nbnSv2ZtrMf_jNOZMuJV055"
+        },
+        style: {
+            layout: 'vertical',
+            size:  'medium',
+            shape: 'rect',
+            color: 'gold',
+        },
+        commit: true,
+        funding: {
+            allowed: [paypal.FUNDING.CARD],
+            disallowed: [paypal.FUNDING.CREDIT]
+        },
+        payment: function(data, actions) {
+
+            var domain = $('input[name="domain"]').val()
+            var period = $('select[name="period"]').val()
+            var org = $('input[name="organization"]').val()
+            var fname = $('input[name="firstname"]').val()
+            var lname = $('input[name="lastname"]').val()
+            var contact = $('input[name="contact_number"]').val()
+            var address = $('textarea[name="domain"]').text()
+            
+            params = {domain: domain, period: period};
+          
+            createPath = "http://localhost:3000/payment/create"
+            return actions.request.post(createPath, params).then(function(response) {
+                return response.id;
+            });
+        },
+        onAuthorize: function(data, actions) {
+            params = {payment_id: data.paymentID, payer_id: data.payerID, domain: $('input[name="domain"').val(), period: $('select[name="period"]').val()}
+
+            executePath = "http://localhost:3000/payment/execute"
+            return actions.request.post(executePath, params).then(function(response) {
+            if (response.payment_state == "approved") {
+                javascript:window.location.href = 'http://localhost:3000' // Replace this with your successful registration page
+            }
+          });
+        },
+        onError: function (err) {
+          alert(err);
+        }
+    }, '#paypal-checkout');
+
+
+    $(document).ready(function() {
+        var price = 35
+        var period = 1;
+        var domain = "";
+
+        $('select[name="period"]').on('change', function() {
+            period = $(this).val()
+            price = period * 35
+
+            $('.price').html("$ " + price + ".00")
+            $('input[name="price"]').val(price)
+        });
+    });
+
+</script>

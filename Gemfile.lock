@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/dotph/PayPal-Ruby-SDK.git
+  revision: bea8df13235643d1ca3bc4dd23d8388068086c35
+  specs:
+    paypal-sdk-rest (1.7.3)
+      multi_json (~> 1.0)
+      xml-simple
+
+GIT
   remote: https://github.com/dotph/epp-client.git
   revision: 0e3108ef1b659d9b1992e732ef546b22da2d1cc3
   specs:
@@ -128,6 +136,7 @@ GEM
     mini_portile2 (2.4.0)
     minitest (5.14.1)
     msgpack (1.3.3)
+    multi_json (1.14.1)
     nio4r (2.5.2)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
@@ -226,6 +235,7 @@ GEM
     websocket-driver (0.7.2)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    xml-simple (1.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
 
@@ -245,6 +255,7 @@ DEPENDENCIES
   jbuilder (~> 2.5)
   jquery-rails
   listen (>= 3.0.5, < 3.2)
+  paypal-sdk-rest (~> 1.7.2)!
   pg (>= 0.18, < 2.0)
   puma (~> 3.11)
   rails (~> 5.2.4)

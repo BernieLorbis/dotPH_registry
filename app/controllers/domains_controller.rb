@@ -5,47 +5,50 @@ class DomainsController < ApplicationController
         extensions = ['.net.ph', '.ph', '.com.ph', '.org.ph']
         suggested_names = []
 
+        # If search domain is set
+        if host_name.present?
+            if check_domain(host_name)
+                message = 'Congratulations your domain is available!'
+                suggested_names.push(host_name)
+                addClass = 'success'
+            else
+                message = host_name + ' is not available, You can select other name below.'
+                if host_name.include?('.')
+                    host_name = host_name.slice(0..(host_name.index('.') - 1))
+                end
+                # Loop in available extensions
+                extensions.each do |ext|
+                    if !(host_name + ext).eql?(params[:q])
+                        if check_domain(host_name + ext)
+                            suggested_names.push(host_name + ext)
+                        end
+                    end
+                end
+                addClass = 'warning'
+            end
+            # Render partial result
+            render partial: "domains/partials/result", locals: { message: message, names: suggested_names, addClass: addClass }
+        end
+
+        
+        # End of search
+
+    end
+
+    def check_domain(host_name)
+
         host      = "172.16.46.55"
         username  = "testblorbis"
         password  = "Password123"
 
         client = EPP::Client.new username, password, host
 
-        # CONTACT
-        timestamp = '%10.6f' % Time.now.to_f
-        handle = timestamp.sub('.', '')
-
-        command   = EPP::Host::Check.new host_name
+        domain    = host_name 
+        command   = EPP::Domain::Check.new(domain)
         response  = client.check command
-        check     = EPP::Host::CheckResponse.new response
+        check     = EPP::Domain::CheckResponse.new response
 
-        if host_name.present?
-            if check.available?
-                message = 'Congratulations your domain is available!'
-                suggested_names.push(host_name)
-                render partial: "domains/partials/result", locals: { message: message, names: suggested_names, addClass: 'success' }
-            else
-                message = host_name + ' is not available, You can select other name below.'
-
-                if host_name.include?('.')
-                    host_name = host_name.chop.chop.chop
-                else
-                    host_name = host_name
-                end
-
-                extensions.each do |ext|
-                    if !(host_name + ext).eql?(params[:q])
-                        suggested_names.push(host_name + ext)
-                    end
-                end
-
-                render partial: "domains/partials/result", locals: { message: message, names: suggested_names, addClass: 'warning' }
-            end
-        else
-
-        end
-
-        
+        check.available?
 
     end
 
@@ -61,32 +64,4 @@ class DomainsController < ApplicationController
     def destroy
     end
 
-    def search
-
-        @message = nil
-
-        host      = "172.16.46.55"
-        username  = "testblorbis"
-        password  = "Password123"
-
-        host_name = params[:q] # wildcard
-
-        client = EPP::Client.new username, password, host
-
-        # CONTACT
-        timestamp = '%10.6f' % Time.now.to_f
-        handle = timestamp.sub('.', '')
-
-        command   = EPP::Host::Check.new host_name
-        response  = client.check command
-        check     = EPP::Host::CheckResponse.new response
-
-        if check.available?
-            
-        else
-            @message = 'unavailable'
-            render :index
-        end
-
-    end
 end

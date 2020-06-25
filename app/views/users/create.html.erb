@@ -1,2 +1,42 @@
-<h1>Users#create</h1>
-<p>Find me in app/views/users/create.html.erb</p>
+<div class="container pt-5">
+	<div class="col-lg-6 m-auto shadow p-5">
+		<form class="registerForm" method="POST">
+			<h2>Register</h2>
+			<hr/>
+			<div class="form-group">
+				<input type="text" class="form-control py-4" placeholder="Email Address" name="email" required >
+				<small class="text-danger d-none email"></small>
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="form-group">
+						<input type="text" class="form-control py-4" placeholder="First Name" name="firstname" required >
+						<small class="text-danger d-none firstname"></small>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="form-group">
+						<input type="text" class="form-control py-4" placeholder="Last Name" name="lastname" required >
+						<small class="text-danger d-none lastname"></small>
+					</div>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				<input type="number" class="form-control py-4" placeholder="Contact Number" name="contact_number" required >
+				<small class="text-danger d-none contact_number"></small>
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control py-4" placeholder="Password" name="password" required >
+				<small class="text-danger d-none password"></small>
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control py-4" placeholder="Confirm Password" name="confirm_password" required >
+				<small class="text-danger d-none confirm_password"></small>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-danger btn-lg btn-block">Create Account</button>
+			</div>
+		</form>
+	</div>
+</div>

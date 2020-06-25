@@ -22,17 +22,26 @@ $(document).ready(function() {
     	$('#result').html(xhr.responseText);
   	});
 
-  	$(document).on('click', '.buy_now', function() {
-  		var domain = $(this).data('domain')
-  		var period = $('#duration_' + $(this).data('counter')).val()
+    // global variables
+    var domain = "";
+    var period = 0;
 
-  		$('#confirmModal').modal('show')
+  	$(document).on('click', '.buy_now', function() {
+  		domain = $(this).data('domain')
+  		period = $('#duration_' + $(this).data('counter')).val()
+
+        $.post('/validateSession', function (data) {
+            if (data == "true") {
+                window.location.href = "/registrant/new"
+            } else {
+                $('#confirmModal').modal('show')
+            }
+        });
   	});
 
   	$(document).on('change', '.duration', function() {
   		var counter = $(this).data('counter')
   		var value = $(this).val()
-
   		var price = 35 * value
 
   		$('#price_' + counter).text(price + ".00")
@@ -44,8 +53,31 @@ $(document).ready(function() {
 
   		$.post('/login', formData,
   		function (data) {
-  			alert(data)
-  		})
+  			if (data.success) {
+                $('#message').html('')
+                $('.loginForm')[0].reset()
+                alert("Period"+ period + " Domain:" + domain)
+            } else {
+                $('#message').html('<div class="alert alert-danger">'+ data.message +'</div>')
+            }
+  		}, 'json')
+  	});
 
-  	})
+   $('.registerForm').on('submit', function(event) {
+        event.preventDefault();
+        var form_data = $(this).serialize()
+
+        $.post('/register', form_data,
+        function(data) {
+            if (data.success) {
+                $('.registerForm')[0].reset()
+                if (confirm(data.message)) {
+                    window.location.href = "/"
+                }
+
+                window.location.href = "/"
+            }
+        }, 'json');
+   });
+
 });
