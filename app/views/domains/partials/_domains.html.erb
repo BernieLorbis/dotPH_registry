@@ -1,0 +1,24 @@
+<h6>
+	<table class="table table-striped">
+	<thead>
+		<th>Domain name</th>
+		<th>Period</th>
+		<th>Date Registered</th>
+		<th>Expiration Date</th>
+		<th>Action</th>
+	</thead>
+	<tbody>
+		<% domains.each do |domain| %>
+			<tr>
+				<th><%= domain.name %></th>
+				<td><%= domain.period %></td>
+				<td><%= domain.reg_date.strftime("%B %d, %Y") %></td>
+				<td><%= domain.exp_date.strftime("%B %d, %Y") %></td>
+				<td>
+					<a href="/renew?domain=<%= domain.name %>" class="text-primary">Renew</a>
+				</td>
+			</tr>
+		<% end %>
+	</tbody>
+</table>
+</h6>

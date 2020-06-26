@@ -1,4 +1,13 @@
 class DomainsController < ApplicationController
+
+    def client
+        host      = "172.16.46.55"
+        username  = "testblorbis"
+        password  = "Password123"
+
+        client = EPP::Client.new username, password, host
+    end
+
     def index
 
         host_name = params[:q]
@@ -29,19 +38,11 @@ class DomainsController < ApplicationController
             # Render partial result
             render partial: "domains/partials/result", locals: { message: message, names: suggested_names, addClass: addClass }
         end
-
-        
         # End of search
 
     end
 
     def check_domain(host_name)
-
-        host      = "172.16.46.55"
-        username  = "testblorbis"
-        password  = "Password123"
-
-        client = EPP::Client.new username, password, host
 
         domain    = host_name 
         command   = EPP::Domain::Check.new(domain)
@@ -49,13 +50,15 @@ class DomainsController < ApplicationController
         check     = EPP::Domain::CheckResponse.new response
 
         check.available?
-
     end
 
-    def new
+    def allDomains
+        domain = Domain.where(user_id: current_user.id)
+        render partial: "domains/partials/domains", locals: {domains: domain}
     end
 
-    def edit
+    def renew
+        @domain = Domain.where(name: params[:domain].to_s).where(user_id: current_user.id).first
     end
 
     def show

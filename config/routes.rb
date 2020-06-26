@@ -13,10 +13,17 @@ Rails.application.routes.draw do
 	get 'search/', to: 'domains#index'
 	# Login
 	post 'login/', to: 'users#login'
+	# Logout
+	get 'logout', to: 'users#logout'
+	# Domains
+	post 'my-domains/', to: 'domains#allDomains'
+	# Renew 
+	get 'renew/', to: 'domains#renew'
 
 	# User Registration
 	post 'register/', to: 'users#register'
-
+	# Success Page
+	get 'payment/success', to: 'users#success'
 
 	# Validate session
 	post '/validateSession', to: 'users#validate_session'

@@ -18,6 +18,7 @@
 
 
 $(document).ready(function() {
+
   	$('form').on("ajax:success", function(event, data, status, xhr){
     	$('#result').html(xhr.responseText);
   	});
@@ -32,7 +33,7 @@ $(document).ready(function() {
 
         $.post('/validateSession', function (data) {
             if (data == "true") {
-                window.location.href = "/registrant/new"
+                window.location.href = "/payment/?period=" + period + "&domain=" + domain + "";
             } else {
                 $('#confirmModal').modal('show')
             }
@@ -56,7 +57,8 @@ $(document).ready(function() {
   			if (data.success) {
                 $('#message').html('')
                 $('.loginForm')[0].reset()
-                alert("Period"+ period + " Domain:" + domain)
+                // redirect to payment page
+                window.location.href = "/payment/?period=" + period + "&domain=" + domain + "";
             } else {
                 $('#message').html('<div class="alert alert-danger">'+ data.message +'</div>')
             }
@@ -79,5 +81,11 @@ $(document).ready(function() {
             }
         }, 'json');
    });
+
+    $(document).on('click', '.myDomain', function() {
+        $.post('/my-domains', function(data) {
+            $('#result').html(data)
+        });
+    });
 
 });

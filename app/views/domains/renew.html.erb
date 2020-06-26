@@ -1,0 +1,26 @@
+<div class="container p-5 mt-5 shadow">
+	<h1>Renew your domain</h1>
+	<br/>
+	<div class="row">
+		<div class="col-lg-8 bg-primary p-5 text-white">
+			<p>
+				<strong>Domain name: </strong>
+				<span><%= params[:domain] %></span>
+			</p>
+			<p>
+				<strong>Expiration Date: </strong>
+				<span><%= @domain.exp_date.strftime("%Y-%B-%d") %></span>
+			</p>
+		</div>
+		<div class="col-lg-4 bg-primary p-5">
+			<div class="form-group">
+				<select>
+					<option value="1">1 year</option>
+					<option value="2">2 years</option>
+					<option value="5">5 years</option>
+					<option value="10">10 years</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
